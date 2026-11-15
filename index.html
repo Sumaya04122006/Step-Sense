@@ -1,0 +1,202 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>StepSense</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0B1030;--ink2:#141A47;--line:#2A3270;--tx:#F3F5FF;--mut:#A9B1E0;--amb:#FFB020;--mint:#3DDC97;--cor:#FF5A5F;--org:#FF8A3D;--fs:19px}
+*{box-sizing:border-box}html{font-size:var(--fs)}body{margin:0;font-family:'Atkinson Hyperlegible',Verdana,sans-serif;background:radial-gradient(1200px 600px at 20% -10%,#232C7A 0,var(--ink) 60%);color:var(--tx);min-height:100vh;line-height:1.45}
+body.xl{--fs:25px}body.hc{--ink:#000;--ink2:#000;--line:#fff;--mut:#fff;background:#000}
+:focus-visible{outline:4px solid var(--amb);outline-offset:3px}[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+#gate{position:fixed;inset:0;z-index:20;background:var(--ink);display:grid;place-items:center;text-align:center;padding:24px;cursor:pointer}
+#gate h1{font-size:3rem;margin:.2em 0}#gate p{color:var(--mut);font-size:1.1rem;max-width:30ch;margin:0 auto}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;padding:16px 22px;border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:12px;font-weight:700;font-size:1.5rem}.logo svg{width:44px;height:44px}
+.tabs{display:flex;background:var(--ink2);border:2px solid var(--line);border-radius:999px;padding:4px}
+.tabs button{border:0;background:none;color:var(--tx);border-radius:999px;padding:10px 22px;min-height:48px;font:inherit;font-weight:700;cursor:pointer}.tabs [aria-pressed=true]{background:var(--amb);color:#1a1200}
+main{max-width:1180px;margin:0 auto;padding:20px}
+.hero{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:linear-gradient(135deg,#1B2370,#141A47);border:2px solid var(--line);border-radius:28px;padding:26px;margin-bottom:20px}
+#orb{width:170px;height:170px;border-radius:50%;border:0;cursor:pointer;font:inherit;font-weight:700;font-size:1.05rem;color:#1a1200;background:radial-gradient(circle at 35% 30%,#FFD27A,var(--amb) 60%,#E08A00);box-shadow:0 0 0 10px rgba(255,176,32,.18),0 0 60px rgba(255,176,32,.35)}
+#orb.on{animation:pulse 1.1s infinite;background:radial-gradient(circle at 35% 30%,#9DFFD0,var(--mint) 60%,#14a867)}
+@keyframes pulse{50%{box-shadow:0 0 0 24px rgba(61,220,151,.15),0 0 80px rgba(61,220,151,.5)}}
+#spoken{font-size:1.5rem;font-weight:700;margin:0 0 6px}.mut{color:var(--mut);font-size:.82rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:18px}.wide{grid-column:1/-1}
+.card{background:var(--ink2);border:2px solid var(--line);border-radius:22px;padding:18px}
+h2,h3,h4{margin:.1em 0 .5em}h2{font-size:1.15rem}
+button.b{font:inherit;min-height:54px;padding:8px 18px;border-radius:14px;border:2px solid var(--line);background:#1D2562;color:var(--tx);cursor:pointer;margin:4px 4px 4px 0;font-weight:700}
+button.b:hover{border-color:var(--amb)}button.p{background:var(--amb);color:#1a1200;border-color:var(--amb)}
+.btns{display:flex;flex-wrap:wrap}.kpi{font-size:2.2rem;font-weight:700;margin:0}
+.bar{height:16px;background:#0a0e2c;border:2px solid var(--line);border-radius:99px;overflow:hidden;margin:8px 0}.bar i{display:block;height:100%;width:0;background:var(--mint);transition:width .4s}
+.zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.zone{background:#0E1440;border:2px solid var(--line);border-radius:18px;padding:12px}
+.zv{padding:10px 12px;border-radius:12px;font-weight:700;border:2px solid var(--line);border-left-width:12px;background:#0a0e2c}
+[data-level=clear]{border-color:var(--mint)}[data-level=caution]{border-color:var(--amb)}[data-level=near]{border-color:var(--org)}[data-level=critical]{border-color:var(--cor);background:#3a1020}[data-level=unavailable]{border-style:dashed;color:var(--mut)}
+.motor{margin:8px 0;padding:6px 10px;border-radius:10px;border:2px solid var(--line);font-size:.85rem;color:var(--mut)}.motor.on{background:var(--amb);color:#1a1200;animation:bz .14s infinite}@keyframes bz{50%{transform:translateX(3px)}}
+.sosbtn{width:100%;min-height:110px;font:inherit;font-size:1.9rem;font-weight:700;background:var(--cor);color:#fff;border:4px solid #fff;border-radius:24px;cursor:pointer}
+.alert{font-size:1.25rem;font-weight:700;color:#ffb3b5}
+.list{list-style:none;margin:0;padding:0;max-height:260px;overflow:auto}.list li{padding:7px 4px;border-bottom:1px solid var(--line);font-size:.85rem}.list .b{min-height:38px;font-size:.75rem}
+.settings{display:flex;flex-wrap:wrap;gap:18px;align-items:center}select,input{font:inherit;padding:10px;border-radius:10px;border:2px solid var(--line);background:#0a0e2c;color:var(--tx)}input[type=checkbox]{width:22px;height:22px}
+canvas{width:100%;height:auto}.addc{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin-top:10px}label{display:grid;gap:4px;font-size:.85rem}.settings label{display:flex;gap:8px;align-items:center}
+summary{cursor:pointer;font-weight:700}footer{text-align:center;padding:18px;color:var(--mut);font-size:.75rem}
+kbd{background:#0a0e2c;border:1px solid var(--line);border-radius:6px;padding:1px 7px}
+@media(max-width:640px){.hero{grid-template-columns:1fr;text-align:center;justify-items:center}:root{--fs:17px}}
+@media(prefers-reduced-motion:reduce),body.rm{*{animation:none!important;transition:none!important}}
+#bar{position:fixed;left:0;right:0;bottom:0;z-index:10;display:flex;gap:10px;padding:10px;background:#0B1030;border-top:2px solid var(--line)}#bar button{min-height:84px;font:inherit;font-size:1.4rem;font-weight:700;border:3px solid #fff;border-radius:20px;cursor:pointer}#bT{flex:3;background:var(--amb);color:#1a1200}#bS{flex:1;background:var(--cor);color:#fff}body.tf main{padding-bottom:130px}</style></head><body>
+<div id="gate" role="button" tabindex="0" aria-label="Tap anywhere or press any key to start StepSense"><div><svg width="96" height="96" viewBox="0 0 48 48"><path d="M8 30c0-6 4-10 9-10 3 0 4 2 7 3l11 3c4 1 6 3 6 7v1H8z" fill="#FFB020"/><rect x="8" y="35" width="36" height="5" rx="2.5" fill="#fff"/></svg><h1>StepSense</h1><p>Tap anywhere or press any key. StepSense will speak to you.</p></div></div>
+<div id="live" class="sr" aria-live="assertive"></div>
+<header><div class="logo"><svg viewBox="0 0 48 48"><path d="M8 30c0-6 4-10 9-10 3 0 4 2 7 3l11 3c4 1 6 3 6 7v1H8z" fill="#FFB020"/><rect x="8" y="35" width="36" height="5" rx="2.5" fill="#fff"/></svg>StepSense</div>
+<div class="tabs" role="group" aria-label="Mode"><button id="mW" aria-pressed="true">Wearer</button><button id="mC" aria-pressed="false">Caregiver</button></div></header>
+<main>
+<section id="wearer">
+<div class="hero"><button id="orb" aria-label="Speak a command. Shortcut: space bar">Tap to speak</button>
+<div><p id="spoken" aria-hidden="true">Ready.</p><p class="mut">Heard: <span id="heard">–</span></p>
+<p class="mut">Say: check battery · connect footwear · start walking · navigate to library · where am I · emergency. Keys: <kbd>Space</kbd> talk · <kbd>B</kbd> battery · <kbd>S</kbd> status · <kbd>W</kbd> where · <kbd>E</kbd> emergency</p></div></div>
+<div class="grid">
+<div class="card"><h2>Footwear</h2><p class="kpi" data-bind="conn"></p><p class="mut" data-bind="devinfo"></p>
+<div class="btns"><button class="b p" data-c="connect">Connect</button><button class="b" data-c="disconnect">Disconnect</button><button class="b" data-c="status">Status</button></div></div>
+<div class="card"><h2>Battery</h2><p class="kpi" data-bind="batt"></p><p class="mut" data-bind="battS"></p><div class="bar"><i data-w="battery"></i></div>
+<div class="btns"><button class="b" data-c="battery">Read aloud</button><button class="b" data-c="charge">Charge</button></div></div>
+<div class="card wide"><h2>Obstacle awareness</h2>
+<div class="btns" style="margin-bottom:10px"><button class="b p" id="walkBtn" aria-pressed="false">Start walking</button></div>
+<div class="zones"><div class="zone"><h3>Left</h3><div class="zv" data-zv="left"></div><div class="motor" data-motor="left"></div></div><div class="zone"><h3>Front</h3><div class="zv" data-zv="front"></div><div class="motor" data-motor="front"></div></div><div class="zone"><h3>Right</h3><div class="zv" data-zv="right"></div><div class="motor" data-motor="right"></div></div></div>
+<p class="mut">Beeps pan left or right toward the obstacle and speed up as it gets closer. Use headphones for full effect. Vibrates on supported phones.</p>
+<details><summary>Sensor test controls</summary><div id="tz"></div>
+<h3>Downward sensor (experimental, not a drop detector)</h3><div class="zv" data-zv="down"></div><div class="btns"><button class="b" data-d="normal">12 cm</button><button class="b" data-d="large">45 cm</button><button class="b" data-d="unavailable">Invalid</button></div></details></div>
+<div class="card wide"><h2>Navigation</h2><div class="btns" id="dests"></div>
+<p>To <b data-bind="navDest"></b> · <span data-bind="navState"></span> · <b data-bind="navDist"></b> · <b data-bind="navEta"></b></p><div class="bar"><i data-w="nav"></i></div><p data-bind="navStep" style="font-weight:700"></p>
+<div class="btns"><button class="b p" data-c="navstart">Start navigation</button><button class="b" data-c="navstop">Stop</button><button class="b" data-c="where">Where am I?</button><button class="b" data-c="notes">Notifications</button></div></div>
+<div class="card wide"><h2>Emergency</h2><button class="sosbtn" id="sosBtn">EMERGENCY SOS</button>
+<div id="sosPanel" hidden><p class="alert" id="sosMsg" role="status"></p><div class="btns"><button class="b p" id="sosC" style="background:var(--cor);color:#fff">Confirm alert</button><button class="b" id="sosX">Cancel</button><button class="b" id="sosD">Done</button></div></div>
+<h3>Emergency contacts</h3><ul class="list" data-list="contactsRO"></ul></div>
+<div class="card wide"><h2>Settings</h2><div class="settings"><label>Voice speed <select id="sRate"><option value="0.85">Slow</option><option value="1.05" selected>Normal</option><option value="1.3">Fast</option></select></label><label>Text <select id="sSize"><option value="l">Large</option><option value="xl">Extra large</option></select></label>
+<label><input type="checkbox" id="sSpeech" checked>Voice</label><label><input type="checkbox" id="sSound" checked>Sounds</label><label><input type="checkbox" id="sHap" checked>Vibration</label><label><input type="checkbox" id="sHC">High contrast</label><label><input type="checkbox" id="sRM">Reduce motion</label><label><input type="checkbox" id="sHands">Hands-free listening</label><label><input type="checkbox" id="sTF">Touch-free mode (bottom buttons, tap anywhere to talk, hold for SOS, auto-listen)</label><label><input type="checkbox" id="sSR">I use a screen reader (mute StepSense voice)</label><button class="b" id="sTest">Test voice</button></div></div>
+</div></section>
+<section id="caregiver" hidden><h2>Caregiver dashboard</h2><div class="grid">
+<div class="card"><h3>Device</h3><p class="kpi" data-bind="conn"></p><p class="mut" data-bind="devinfo"></p></div>
+<div class="card"><h3>Battery</h3><p class="kpi" data-bind="batt"></p><p data-bind="battS"></p><div class="bar"><i data-w="battery"></i></div></div>
+<div class="card"><h3>Navigation</h3><p class="kpi" data-bind="navState"></p><p>To <span data-bind="navDest"></span> · <span data-bind="navDist"></span></p><div class="bar"><i data-w="nav"></i></div></div>
+<div class="card"><h3>SOS status</h3><p class="kpi" data-bind="sosState"></p></div>
+<div class="card wide"><h3>Battery history</h3><canvas id="chart" width="700" height="220" role="img" aria-label="Battery history chart"></canvas></div>
+<div class="card wide"><h3>Live sensors</h3><div class="zones"><div><h4>Left</h4><div class="zv" data-zv="left"></div></div><div><h4>Front</h4><div class="zv" data-zv="front"></div></div><div><h4>Right</h4><div class="zv" data-zv="right"></div></div></div></div>
+<div class="card"><h3>Emergency history</h3><ul class="list" data-list="events"></ul></div><div class="card"><h3>Activity</h3><ul class="list" data-list="logs"></ul></div>
+<div class="card wide"><h3>Contacts</h3><ul class="list" data-list="contacts"></ul><div class="addc"><label>Name<input id="cN" maxlength="30"></label><label>Phone<input id="cP" maxlength="20" inputmode="tel"></label><button class="b p" id="cA">Add contact</button></div></div>
+</div></section></main><div id="bar" hidden><button id="bT" aria-label="Speak a command">Speak</button><button id="bS" aria-label="Emergency SOS">SOS</button></div><footer>StepSense · prototype build</footer>
+<script>
+var $=function(s){return document.querySelector(s)},$$=function(s){return document.querySelectorAll(s)};
+var S={bat:85,chg:false,conn:'off',z:{left:{d:null,ph:0,t:0,h:0},front:{d:null,ph:0,t:0,h:0},right:{d:null,ph:0,t:0,h:0}},down:null,walk:false,dest:null,nav:{on:false,p:0},sos:'idle',cnt:0,contacts:[],logs:[],events:[],notes:[],hist:[],vib:{},
+set:{rate:1.05,xl:false,speech:true,sound:true,hap:true,hc:false,rm:false,hands:false}};
+var NAME={clear:'Clear',caution:'Caution',near:'Near',critical:'Critical',unavailable:'Unavailable'},D={clear:200,caution:120,near:65,critical:28},SIDE={left:'on your left',front:'ahead',right:'on your right'},PAN={left:-1,front:0,right:1};
+var lvl=function(d){return d==null?'unavailable':d<=40?'critical':d<=80?'near':d<=140?'caution':'clear'};
+var T=function(){return new Date().toLocaleTimeString()},cap=function(s){return s[0].toUpperCase()+s.slice(1)};
+function log(m){S.logs.unshift({t:T(),m:m});S.logs.length=Math.min(S.logs.length,60);ui()}
+function note(m){S.notes.push({m:m,r:false})}
+/* ---- audio ---- */
+var AC;function ac(){if(!AC)try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}if(AC&&AC.state==='suspended')AC.resume();return AC}
+function tone(f,dur,pan,vol,type,at){if(!S.set.sound)return;var c=ac();if(!c)return;var t=c.currentTime+(at||0),o=c.createOscillator(),g=c.createGain(),p=c.createStereoPanner?c.createStereoPanner():null;
+o.type=type||'sine';o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol||.25,t+.01);g.gain.exponentialRampToValueAtTime(.001,t+dur);o.connect(g);if(p){p.pan.value=pan||0;g.connect(p);p.connect(c.destination)}else g.connect(c.destination);o.start(t);o.stop(t+dur+.02)}
+var chime=function(a){a.forEach(function(f,i){tone(f,.35,0,.22,'sine',i*.13)})};
+function buzz(p){if(S.set.hap&&navigator.vibrate)navigator.vibrate(p)}
+/* ---- speech ---- */
+var VOICE;function pick(){var v=speechSynthesis.getVoices().filter(function(x){return /^en/i.test(x.lang)});VOICE=v.find(function(x){return /natural|neural|premium|enhanced/i.test(x.name)})||v.find(function(x){return /Google US|Samantha|Aria|Jenny|Daniel|Karen/i.test(x.name)})||v[0]}
+if('speechSynthesis' in window){pick();speechSynthesis.onvoiceschanged=pick}
+function say(t,o){o=o||{};$('#spoken').textContent=t;var l=$('#live');l.textContent='';setTimeout(function(){l.textContent=t},40);
+if(!S.set.speech||S.set.sr||!('speechSynthesis' in window))return;if(!o.q)speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.rate=S.set.rate;u.lang='en-US';if(VOICE)u.voice=VOICE;
+u.onend=function(){if(o.cb)o.cb();if(S.set.hands&&!live&&!speechSynthesis.speaking)setTimeout(listen,500)};speechSynthesis.speak(u)}
+/* ---- device ---- */
+function connect(){if(S.conn==='on')return say('Footwear is already connected.');if(S.conn==='wait')return;S.conn='wait';say('Connecting to your footwear.');tone(440,.15,0,.2);log('Connecting to footwear');ui();
+setTimeout(function(){S.conn='on';['left','front','right'].forEach(function(z){S.z[z]={d:200,ph:0,t:0,h:0}});chime([523,659,784]);log('Footwear connected');note('Footwear connected.');say('Footwear connected. Battery '+S.bat+' percent. Obstacle sensors are active.');ui()},2000)}
+function disconnect(){if(S.conn==='off')return say('Footwear is already disconnected.');S.conn='off';S.walk=false;['left','front','right'].forEach(function(z){S.z[z]={d:null,ph:0,t:0,h:0}});S.down=null;chime([784,523,392]);log('Footwear disconnected');note('Footwear disconnected.');say('Footwear disconnected. Obstacle sensors are off.');ui()}
+var bl=function(){return(S.bat<=10?'Critical':S.bat<=20?'Low':S.bat<=50?'Moderate':'Good')+(S.chg?', charging':'')};
+function setBat(v,quiet){var o=S.bat;S.bat=Math.max(0,Math.min(100,v));S.hist.push({b:S.bat});if(S.hist.length>40)S.hist.shift();
+if(o>20&&S.bat<=20&&S.bat>10){chime([440,330]);note('Battery low.');say('Battery low at '+S.bat+' percent. Please charge soon.')}
+if(o>10&&S.bat<=10){chime([440,330,220]);note('Battery critical.');say('Warning. Battery critical at '+S.bat+' percent. Please charge now.')}ui()}
+function charge(){S.chg=!S.chg;clearInterval(S.ci);if(S.chg){say('Charging started.');chime([523,784]);S.ci=setInterval(function(){if(S.bat>=100){S.chg=false;clearInterval(S.ci);say('Battery fully charged.');chime([784,988]);ui();return}setBat(S.bat+1)},1000)}else say('Charging stopped.');ui()}
+/* ---- sensors ---- */
+function setZone(z,l,manual){if(S.conn!=='on')return say('Footwear is not connected. Say connect footwear first.');var o=lvl(S.z[z].d);S.z[z].d=l==='unavailable'?null:D[l]+(manual?0:Math.round(Math.random()*8));if(manual){S.z[z].ph=2;S.z[z].h=14}announce(z,o);ui()}
+var lastA={};function announce(z,o){var n=lvl(S.z[z].d);if(n===o)return;var now=Date.now();if(now-(lastA[z]||0)<2500&&n!=='critical')return;lastA[z]=now;
+if(n==='clear'){if(o!=='unavailable')say(cap(z)+' clear.',{q:1})}else if(n==='unavailable')say(cap(z)+' sensor not responding. Take care.');
+else{var m=(n==='critical'?'Stop. ':'')+'Obstacle '+SIDE[z]+', '+Math.round(S.z[z].d/100*10)/10+' meters.';say(m);note('Obstacle '+SIDE[z]+'.');log(cap(z)+' '+NAME[n]+' '+S.z[z].d+' cm');
+S.vib[z]=1;setTimeout(function(){S.vib[z]=0;ui()},2200);buzz(n==='critical'?[200,80,200,80,200]:[120,60,120])}}
+setInterval(function(){if(S.conn!=='on')return;['left','front','right'].forEach(function(z){var q=S.z[z],o=lvl(q.d);if(q.d==null)return;
+if(q.ph===0&&S.walk&&Math.random()<.07){q.ph=1;q.t=28+Math.random()*60}
+else if(q.ph===1){q.d=Math.max(q.t,q.d-(14+Math.random()*10));if(q.d<=q.t){q.ph=2;q.h=6+Math.random()*6}}
+else if(q.ph===2){q.d+=Math.round(Math.random()*4-2);if(--q.h<=0)q.ph=3}
+else if(q.ph===3){q.d=Math.min(200,q.d+22);if(q.d>=200)q.ph=0}
+announce(z,o)});ui()},500);
+(function loop(){var best=null;if(S.conn==='on')['left','front','right'].forEach(function(z){var d=S.z[z].d;if(d!=null&&d<=140&&(!best||d<S.z[best].d))best=z});
+var w=1100;if(best){var d=S.z[best].d;tone(d<=40?1100:d<=80?820:620,.09,PAN[best],.3,'square');w=d<=40?140:d<=80?330:700}setTimeout(loop,w)})();
+setInterval(function(){if(S.conn==='on'&&!S.chg){S.dr=(S.dr||0)+1;if(S.dr>=40){S.dr=0;setBat(S.bat-1)}}},1000);
+function downSet(k){if(S.conn!=='on')return say('Footwear is not connected.');S.down=k==='unavailable'?null:k==='normal'?12:45;say('Downward sensor updated. This sensor is experimental and is not a reliable drop detector.');ui()}
+/* ---- navigation ---- */
+var DEST={'University entrance':120,'Library':260,'Main reception':180,'Parking area':340};var last=-1;
+var STEPS=[[0,'Head straight ahead.'],[25,'In forty meters, turn left.'],[45,'Turn left now.'],[60,'Continue straight. Crossing ahead, stop and listen for traffic.'],[80,'Your destination is on your right, in twenty meters.'],[100,'You have arrived.']];
+function pickDest(d){S.dest=d;log('Destination: '+d);say('Destination set to '+d+'.');ui()}
+function navStart(){if(!S.dest)return say('Where to? Say University entrance, Library, Main reception, or Parking area.');clearInterval(S.nt);S.nav={on:true,p:0};last=-1;chime([523,659]);log('Navigation started to '+S.dest);
+say('Starting navigation to '+S.dest+'. '+DEST[S.dest]+' meters, about '+Math.ceil(DEST[S.dest]/1.2/60)+' minutes.',{cb:function(){stepSay()}});
+S.nt=setInterval(function(){S.nav.p=Math.min(100,S.nav.p+2.5);stepSay();if(S.nav.p>=100){S.nav.on=false;clearInterval(S.nt);chime([659,784,1047]);note('Arrived at '+S.dest+'.');log('Arrived at '+S.dest)}ui()},1000);ui()}
+function stepSay(){var i=0;STEPS.forEach(function(s,k){if(S.nav.p>=s[0])i=k});if(i!==last){last=i;tone(880,.12,0,.2);say(STEPS[i][1],{q:1});log('Direction: '+STEPS[i][1])}}
+function navStop(){if(!S.nav.on)return say('Navigation is not active.');clearInterval(S.nt);S.nav.on=false;say('Navigation stopped.');log('Navigation stopped');ui()}
+function where(){say(S.nav.on?'You are on the way to '+S.dest+', '+Math.round(S.nav.p)+' percent of the route done, '+dist()+' meters to go.':'You are at your starting point. Say navigate to, then a destination.')}
+var dist=function(){return S.dest?Math.round(DEST[S.dest]*(1-S.nav.p/100)):0};
+/* ---- SOS ---- */
+function sosAsk(){if(S.sos==='confirm'||S.sos==='count')return say('Emergency request already open. Say confirm or cancel.');S.sos='confirm';log('SOS requested');tone(300,.5,0,.35,'sawtooth');buzz([300,100,300]);say('Emergency assistance. Say confirm to alert your contacts, or cancel to stop.');ui()}
+function sosYes(){if(S.sos!=='confirm')return;S.sos='count';S.cnt=5;log('SOS confirmed');say('Confirmed. Alerting your contacts in five seconds. Say cancel to stop.');
+S.sc=setInterval(function(){S.cnt--;if(S.cnt>0){tone(700,.15,0,.35,'square');if(S.cnt<=3)say(String(S.cnt),{q:1})}else{clearInterval(S.sc);S.sos='sent';var n=S.contacts.map(function(x){return x.name}).join(' and ')||'no one';
+S.events.unshift({t:T(),m:'Emergency alert sent to '+n+' with your last known location'});log('SOS alert sent');note('Emergency alert sent.');for(var i=0;i<4;i++){tone(880,.25,0,.35,'sawtooth',i*.5);tone(660,.25,0,.35,'sawtooth',i*.5+.25)}buzz([500,150,500,150,500]);
+say('Emergency alert sent to '+n+'. Your location was shared. Stay where you are. Help is being notified.',{q:1})}ui()},1000);ui()}
+function sosNo(){if(S.sos!=='confirm'&&S.sos!=='count')return;clearInterval(S.sc);S.sos='idle';S.events.unshift({t:T(),m:'Emergency cancelled before sending'});chime([523,392]);log('SOS cancelled');say('Cancelled. No alert was sent.');ui()}
+/* ---- commands & voice ---- */
+function run(c){log('Command: '+c);var m={battery:function(){say('Battery is at '+S.bat+' percent. '+bl()+'.')},status:function(){say('Footwear '+({off:'disconnected',wait:'connecting',on:'connected'}[S.conn])+'. Battery '+S.bat+' percent. '+(S.walk?'Obstacle sensing is active. ':'')+(S.nav.on?'Navigating to '+S.dest+'.':'Navigation is off.'))},
+connect:connect,disconnect:disconnect,charge:charge,navstart:navStart,navstop:navStop,where:where,sos:sosAsk,
+notes:function(){var u=S.notes.filter(function(n){return!n.r});if(!u.length)return say('No new notifications.');say('You have '+u.length+' notifications. '+u.map(function(n){return n.m}).join(' '));u.forEach(function(n){n.r=true})},
+walk:function(){walk(!S.walk)}};m[c]&&m[c]();ui()}
+function walk(on){if(S.conn!=='on')return say('Connect your footwear first.');S.walk=on;say(on?'Walking mode on. I will warn you about obstacles.':'Walking mode off.');chime(on?[523,784]:[784,523]);ui()}
+function handle(raw){var t=raw.toLowerCase().replace(/[.,!?]/g,'');$('#heard').textContent=raw;
+if(S.sos==='confirm'||S.sos==='count'){if(/cancel|stop|no\b|abort/.test(t))return sosNo();if(S.sos==='confirm'&&/confirm|yes|send/.test(t))return sosYes()}
+var d=/entrance/.test(t)?'University entrance':/library/.test(t)?'Library':/reception/.test(t)?'Main reception':/parking/.test(t)?'Parking area':null;
+if(/disconnect/.test(t))return run('disconnect');if(/connect/.test(t))return run('connect');if(/battery/.test(t))return run('battery');
+if(/start walking|walking mode/.test(t))return walk(true);if(/stop walking/.test(t))return walk(false);if(/status|device/.test(t))return run('status');
+if(/stop nav|cancel nav|end nav/.test(t))return run('navstop');if(/navig|take me|go to|directions/.test(t)||d){if(d)pickDest(d);return setTimeout(navStart,d?900:0)}
+if(/where/.test(t))return run('where');if(/emergency|sos|help/.test(t))return run('sos');if(/notification/.test(t))return run('notes');
+say('Sorry, I did not catch that. Try check battery, navigate to library, or emergency.')}
+var R=window.SpeechRecognition||window.webkitSpeechRecognition,rec,live=false;
+function listen(){if(!R)return say('Voice commands need Chrome or Edge. Use the buttons instead.');if(live)return;if(window.speechSynthesis)speechSynthesis.cancel();tone(880,.1,0,.25);rec=new R();rec.lang='en-US';live=true;
+rec.onstart=function(){$('#orb').classList.add('on');$('#orb').textContent='Listening'};rec.onresult=function(e){handle(e.results[e.results.length-1][0].transcript)};
+rec.onerror=function(e){if(e.error==='not-allowed'){S.set.hands=false;$('#sHands').checked=false;say('Microphone permission was denied. Use the buttons, or open this page from localhost.')}};
+rec.onend=function(){live=false;$('#orb').classList.remove('on');$('#orb').textContent='Tap to speak';if(S.set.hands&&!speechSynthesis.speaking)setTimeout(listen,400)};try{rec.start()}catch(e){live=false}}
+/* ---- ui ---- */
+var B={batt:function(){return S.bat+'%'},battS:bl,conn:function(){return{off:'Disconnected',wait:'Connecting…',on:'Connected'}[S.conn]},devinfo:function(){return S.conn==='on'?'StepSense Insole · Firmware 1.0 · Signal strong':'No device'},
+sosState:function(){return{idle:'No active alert',confirm:'Awaiting confirmation',count:'Sending in '+S.cnt+'s',sent:'Alert sent'}[S.sos]},navDest:function(){return S.dest||'None'},
+navState:function(){return S.nav.on?'Navigating':S.nav.p>=100?'Arrived':'Idle'},navDist:function(){return S.dest?dist()+' m':'--'},navEta:function(){return S.dest?Math.ceil(dist()/1.2/60*10)/10+' min':'--'},
+navStep:function(){return S.nav.on||S.nav.p>=100?STEPS[Math.max(0,last)][1]:'Pick a destination, then start.'}};
+var esc=function(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML};
+function fill(k,h,e){var x=$('[data-list='+k+']');if(x)x.innerHTML=h||'<li>'+e+'</li>'}
+function ui(){$$('[data-bind]').forEach(function(e){var f=B[e.dataset.bind];if(f)e.textContent=f()});$$('[data-w]').forEach(function(e){e.style.width=(e.dataset.w==='battery'?S.bat:S.nav.p)+'%';if(e.dataset.w==='battery')e.style.background=S.bat<=20?'var(--cor)':'var(--mint)'});
+$$('[data-zv]').forEach(function(e){var k=e.dataset.zv;if(k==='down'){e.dataset.level=S.down?'caution':'unavailable';e.textContent=S.down?'Downward '+S.down+' cm (unvalidated)':'Unavailable';return}var z=S.z[k],l=lvl(z.d);e.dataset.level=l;e.textContent=NAME[l]+(z.d!=null?' · '+Math.round(z.d)+' cm':'')});
+$$('[data-motor]').forEach(function(e){var k=e.dataset.motor,on=S.vib[k];e.classList.toggle('on',!!on);e.textContent=(k==='front'?'Both motors ':cap(k)+' motor ')+(on?'vibrating':'idle')});
+$$('#dests button').forEach(function(b){b.setAttribute('aria-pressed',b.textContent===S.dest);b.classList.toggle('p',b.textContent===S.dest)});$('#walkBtn').textContent=S.walk?'Stop walking':'Start walking';
+var s=S.sos;$('#sosPanel').hidden=s==='idle';$('#sosC').hidden=s!=='confirm';$('#sosX').hidden=!(s==='confirm'||s==='count');$('#sosD').hidden=s!=='sent';$('#sosMsg').textContent={confirm:'Confirm to alert your contacts.',count:'Alerting your contacts in '+S.cnt+' seconds…',sent:'Alert sent to your contacts.'}[s]||'';
+fill('events',S.events.map(function(x){return'<li><b>'+x.t+'</b> '+esc(x.m)+'</li>'}).join(''),'No emergency events.');fill('logs',S.logs.map(function(x){return'<li><b>'+x.t+'</b> '+esc(x.m)+'</li>'}).join(''),'No activity.');
+fill('contactsRO',S.contacts.map(function(c){return'<li>'+esc(c.name)+' – '+esc(c.phone)+'</li>'}).join(''),'No contacts.');fill('contacts',S.contacts.map(function(c,i){return'<li>'+esc(c.name)+' – '+esc(c.phone)+'<button class="b" data-rm="'+i+'" aria-label="Remove '+esc(c.name)+'">Remove</button></li>'}).join(''),'No contacts.');
+var cv=$('#chart');if($('#caregiver').hidden)return;var x=cv.getContext('2d'),W=cv.width,H=cv.height;x.clearRect(0,0,W,H);x.strokeStyle='#2A3270';x.fillStyle='#A9B1E0';x.font='12px sans-serif';
+for(var g=0;g<=100;g+=25){var y=H-20-(H-40)*g/100;x.beginPath();x.moveTo(36,y);x.lineTo(W-10,y);x.stroke();x.fillText(g+'%',2,y+4)}
+x.strokeStyle='#FFB020';x.lineWidth=3;x.beginPath();var n=S.hist.length;S.hist.forEach(function(p,i){var px=36+(W-50)*(n<2?0:i/(n-1)),py=H-20-(H-40)*p.b/100;i?x.lineTo(px,py):x.moveTo(px,py)});x.stroke()}
+function apply(){var c=document.body.classList,s=S.set;c.toggle('xl',s.xl);c.toggle('hc',s.hc);c.toggle('rm',s.rm);c.toggle('tf',!!s.tf);$('#bar').hidden=!s.tf;try{localStorage.setItem('ss',JSON.stringify(s))}catch(e){}}
+function mode(c){$('#wearer').hidden=c;$('#caregiver').hidden=!c;$('#mW').setAttribute('aria-pressed',!c);$('#mC').setAttribute('aria-pressed',c);say(c?'Caregiver dashboard.':'Wearer mode.');ui()}
+document.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;if(b.dataset.c)run(b.dataset.c);if(b.dataset.z)setZone(b.dataset.z,b.dataset.l,1);if(b.dataset.d)downSet(b.dataset.d)});
+document.addEventListener('keydown',function(e){if(!$('#gate').hidden||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;var k={b:'battery',s:'status',w:'where',e:'sos',n:'navstart'}[e.key.toLowerCase()];if(k&&!e.ctrlKey&&!e.metaKey)run(k);if(e.code==='Space'&&e.target.tagName!=='BUTTON'){e.preventDefault();listen()}});
+function begin(){if(!$('#gate').hidden){$('#gate').hidden=true;ac();chime([392,523,659,784]);say(S.set.tf?'Welcome to StepSense. The bottom of your screen has two buttons. The wide one speaks to me. The small red one is emergency. You can also tap anywhere empty to talk, or hold two seconds for emergency. I am listening now. Say connect footwear to begin.':'Welcome to StepSense. I am your navigation assistant. Say connect footwear to begin, or press the big button to speak. For emergencies, say emergency.',{cb:function(){if(S.set.tf&&!S.set.sr){S.set.hands=true;$('#sHands').checked=true;listen()}}})}}
+$('#gate').onclick=begin;$('#gate').onkeydown=begin;
+['left','front','right'].forEach(function(z){$('#tz').insertAdjacentHTML('beforeend','<div class="btns"><b style="width:60px;align-self:center">'+cap(z)+'</b>'+['caution','near','critical','clear','unavailable'].map(function(l){return'<button class="b" data-z="'+z+'" data-l="'+l+'">'+NAME[l]+'</button>'}).join('')+'</div>')});
+Object.keys(DEST).forEach(function(d){var b=document.createElement('button');b.className='b';b.textContent=d;b.onclick=function(){pickDest(d)};$('#dests').appendChild(b)});
+$('#orb').onclick=listen;$('#bT').onclick=listen;$('#bS').onclick=sosAsk;$('#gate').focus();var hp,hf,ok=0,IN='button,input,select,summary,label,a,#caregiver,#bar';document.addEventListener('pointerdown',function(e){ok=0;if(!S.set.tf||!$('#gate').hidden||$('#wearer').hidden||e.target.closest(IN))return;ok=1;hf=0;hp=setTimeout(function(){hf=1;buzz([400,100,400]);sosAsk()},2000)});document.addEventListener('pointerup',function(){clearTimeout(hp);if(ok&&!hf)listen();ok=0});document.addEventListener('pointercancel',function(){clearTimeout(hp);ok=0});$('#walkBtn').onclick=function(){walk(!S.walk)};$('#mW').onclick=function(){mode(false)};$('#mC').onclick=function(){mode(true)};
+$('#sosBtn').onclick=sosAsk;$('#sosC').onclick=sosYes;$('#sosX').onclick=sosNo;$('#sosD').onclick=function(){S.sos='idle';say('Closed.');ui()};
+$('#sRate').onchange=function(){S.set.rate=+this.value;apply()};$('#sSize').onchange=function(){S.set.xl=this.value==='xl';apply()};
+[['sSpeech','speech'],['sSound','sound'],['sHap','hap'],['sHC','hc'],['sRM','rm'],['sHands','hands'],['sSR','sr'],['sTF','tf']].forEach(function(p){$('#'+p[0]).onchange=function(){S.set[p[1]]=this.checked;if(p[1]==='speech'&&!this.checked)speechSynthesis.cancel();if(p[1]==='hands'&&this.checked)listen();apply()}});
+$('#sTest').onclick=function(){say('This is your StepSense voice. Obstacle on your left, one meter.');tone(820,.12,-1,.3,'square')};
+$('#cA').onclick=function(){var n=$('#cN'),p=$('#cP');if(!n.value.trim()||!p.value.trim())return say('Enter a name and phone number.');S.contacts.push({name:n.value.trim(),phone:p.value.trim()});n.value=p.value='';sv();log('Contact added');say('Contact added.');ui()};
+$('#caregiver').addEventListener('click',function(e){var b=e.target.closest('[data-rm]');if(b){S.contacts.splice(+b.dataset.rm,1);sv();ui()}});
+function sv(){try{localStorage.setItem('ssc',JSON.stringify(S.contacts))}catch(e){}}
+try{Object.assign(S.set,JSON.parse(localStorage.getItem('ss'))||{});S.contacts=JSON.parse(localStorage.getItem('ssc'))||[]}catch(e){}
+if(!S.contacts.length)S.contacts=[{name:'Maya (caregiver)',phone:'+971 50 000 0001'},{name:'Omar (family)',phone:'+971 50 000 0002'}];
+$('#sRate').value=S.set.rate;$('#sSize').value=S.set.xl?'xl':'l';$('#sSpeech').checked=S.set.speech;$('#sSound').checked=S.set.sound;$('#sHap').checked=S.set.hap;$('#sHC').checked=S.set.hc;$('#sRM').checked=S.set.rm;$('#sSR').checked=!!S.set.sr;$('#sTF').checked=!!S.set.tf;S.set.hands=false;apply();
+S.hist.push({b:S.bat});log('StepSense ready');ui();
+</script></body></html>
